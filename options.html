@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhishGuard Settings</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --background: #f8fafc;
+      --text: #1e293b;
+      --border: #e2e8f0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    
+    .logo {
+      width: 36px;
+      height: 36px;
+      margin-right: 16px;
+    }
+    
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+      color: var(--primary);
+    }
+    
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 24px 0 16px;
+      color: var(--text);
+    }
+    
+    .section {
+      margin-bottom: 32px;
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 28px;
+      margin-right: 12px;
+    }
+    
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cbd5e1;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px var(--primary);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+    
+    .toggle-label {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .whitelist-form {
+      display: flex;
+      margin-bottom: 16px;
+    }
+    
+    #whitelistInput {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px 0 0 4px;
+      font-size: 14px;
+    }
+    
+    #whitelistInput:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+    
+    #addButton {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 0 4px 4px 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    #addButton:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    #whitelistList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    
+    #whitelistList li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    
+    #whitelistList li:last-child {
+      border-bottom: none;
+    }
+    
+    #whitelistList li button {
+      background-color: transparent;
+      color: var(--danger);
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background-color 0.2s;
+      margin-left: 8px;
+    }
+    
+    #whitelistList li button:hover {
+      background-color: #fee2e2;
+    }
+    
+    .note-box {
+      background-color: #f1f5f9;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      margin-top: 24px;
+      border-radius: 0 4px 4px 0;
+    }
+    
+    .note-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .note-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+    
+    code {
+      background-color: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 13px;
+    }
+    
+    .empty-list {
+      text-align: center;
+      color: #64748b;
+      padding: 16px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#2563eb" fill="#e0e7ff"></path>
+      </svg>
+      <h1>PhishGuard Settings</h1>
+    </div>
+    
+    <div class="section">
+      <h2>Protection Settings</h2>
+      <div class="toggle-container">
+        <label class="toggle">
+          <input type="checkbox" id="adultToggle" aria-label="Enable adult content protection">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label">Enable adult content protection</span>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>Whitelist</h2>
+      <p>Add trusted domains to bypass PhishGuard checks.</p>
+      
+      <div class="whitelist-form">
+        <input type="text" id="whitelistInput" placeholder="Enter domain (e.g., google.com)">
+        <button id="addButton">Add</button>
+      </div>
+      
+      <ul id="whitelistList">
+        <!-- Whitelist items will be added here by the JS script -->
+      </ul>
+    </div>
+    
+    <div class="note-box">
+      <div class="note-title">
+        <svg class="note-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Important Note
+      </div>
+      <p>Ensure Ollama is running with: <code>$env:OLLAMA_ORIGINS="chrome-extension://*"; ollama serve</code></p>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
